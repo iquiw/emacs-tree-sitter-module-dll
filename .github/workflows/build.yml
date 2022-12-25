@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branch:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      MSYSTEM: MINGW64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install dependencies
+        run: |
+           pacman -S --noconfirm --needed --noprogressbar make mingw-w64-x86_64-gcc
+        shell: 'C:/shells/msys2bash.cmd {0}'
+
+      - name: Build tree-sitter modules
+        run: |
+          export PATH=/mingw64/bin:$PATH
+
+          sh build.sh bash
+
+          ls dist
+        shell: 'C:/shells/msys2bash.cmd {0}'
