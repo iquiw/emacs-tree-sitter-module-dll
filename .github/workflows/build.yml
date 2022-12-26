@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branch:
+    tags:
       - '*'
 
 jobs:
@@ -28,5 +28,33 @@ jobs:
 
           sh build.sh bash
 
-          ls dist
+          ls -l dist
         shell: 'C:/shells/msys2bash.cmd {0}'
+
+      - name: Archive
+        id: archive
+        run: |
+          $VERSION = "${{ github.ref }}" -Replace "refs/tags/", ""
+
+          cd dist
+          Compress-Archive -Path *.dll -DestinationPath "../tree-sitter-module-dll-$VERSION.zip"
+          cd ..
+          $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 "tree-sitter-module-dll-$VERSION.zip").Hash
+          "$ARTIFACT_HASH  tree-sitter-module-dll-$VERSION.zip"| Out-File -Encoding ascii -File sha256sum.txt
+
+          "hash=$ARTIFACT_HASH`n" | Out-File -NoNewline -Encoding utf8 -Append $env:GITHUB_OUTPUT
+          "version=$VERSION`n" | Out-File -NoNewline -Encoding utf8 -Append $env:GITHUB_OUTPUT
+          gc $env:GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "tree-sitter-module-dll-${{ steps.archive.outputs.version }}.zip,sha256sum.txt"
+          artifactContentType: application/octet-stream
+          name: tree-sitter module DLLs ${{ steps.archive.outputs.version }}
+          body: |
+            tree-sitter module DLLs.
+
+            | File | SHA-256 sum |
+            | ---  | ---         |
+            | tree-sitter-module-dll-${{ steps.archive.outputs.version }}.zip | `${{ steps.archive.outputs.hash }}` |
