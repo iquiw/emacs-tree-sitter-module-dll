@@ -35,12 +35,13 @@ jobs:
         id: archive
         run: |
           $VERSION = "${{ github.ref }}" -Replace "refs/tags/", ""
+          $ARCHIVE = "emacs-tree-sitter-module-$VERSION.zip"
 
           cd dist
-          Compress-Archive -Path *.dll -DestinationPath "../tree-sitter-module-dll-$VERSION.zip"
+          Compress-Archive -Path *.dll -DestinationPath "../$ARCHIVE"
           cd ..
-          $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 "tree-sitter-module-dll-$VERSION.zip").Hash
-          "$ARTIFACT_HASH  tree-sitter-module-dll-$VERSION.zip"| Out-File -Encoding ascii -File sha256sum.txt
+          $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 "$ARCHIVE").Hash
+          "$ARTIFACT_HASH  $ARCHIVE"| Out-File -Encoding ascii -File sha256sum.txt
 
           "hash=$ARTIFACT_HASH`n" | Out-File -NoNewline -Encoding utf8 -Append $env:GITHUB_OUTPUT
           "version=$VERSION`n" | Out-File -NoNewline -Encoding utf8 -Append $env:GITHUB_OUTPUT
@@ -49,7 +50,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "tree-sitter-module-dll-${{ steps.archive.outputs.version }}.zip,sha256sum.txt"
+          artifacts: "emacs-tree-sitter-module-${{ steps.archive.outputs.version }}.zip,sha256sum.txt"
           artifactContentType: application/octet-stream
           name: tree-sitter module DLLs ${{ steps.archive.outputs.version }}
           body: |
@@ -57,4 +58,4 @@ jobs:
 
             | File | SHA-256 sum |
             | ---  | ---         |
-            | tree-sitter-module-dll-${{ steps.archive.outputs.version }}.zip | `${{ steps.archive.outputs.hash }}` |
+            | emacs-tree-sitter-module-${{ steps.archive.outputs.version }}.zip | `${{ steps.archive.outputs.hash }}` |
