@@ -7,3 +7,6 @@
 [submodule "toml"]
 	path = toml
 	url = https://github.com/ikatyang/tree-sitter-toml
+[submodule "rust"]
+	path = rust
+	url = https://github.com/tree-sitter/tree-sitter-rust.git
