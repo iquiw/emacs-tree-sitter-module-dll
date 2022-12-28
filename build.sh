@@ -3,8 +3,14 @@
 set -euo pipefail
 
 dir=$1
+if [ "$dir" = . ]; then
+        lang=$(pwd)
+        lang=${lang##*/}
+else
+        lang=$dir
+fi
 
-mkdir -p dist
+echo -n "Building $lang... "
 
 cp "$dir/grammar.js" "$dir/src"
 cd "$dir/src"
@@ -20,5 +26,6 @@ elif [ -f scanner.cc ]; then
 	$CC -fPIC -I. -c scanner.cc
 fi
 
-$CC -fPIC -shared *.o -o "../../dist/libtree-sitter-${dir}.dll"
+$CC -fPIC -shared *.o -o "../../dist/libtree-sitter-${lang}.dll"
 
+echo "done."

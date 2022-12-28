@@ -24,9 +24,11 @@ jobs:
 
       - name: Build tree-sitter modules
         run: |
-          export PATH=/mingw64/bin:$PATH
+          export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
 
-          sh build.sh bash
+          mkdir -p dist
+
+          git submodule foreach sh ../build.sh .
 
           ls -l dist
         shell: 'C:/shells/msys2bash.cmd {0}'
