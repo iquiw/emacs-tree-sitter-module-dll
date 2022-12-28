@@ -19,3 +19,6 @@
 [submodule "typescript"]
 	path = typescript
 	url = https://github.com/tree-sitter/tree-sitter-typescript
+[submodule "python"]
+	path = python
+	url = https://github.com/tree-sitter/tree-sitter-python
