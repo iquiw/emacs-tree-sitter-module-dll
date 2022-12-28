@@ -1,6 +1,6 @@
 [submodule "bash"]
 	path = bash
-	url = https://github.com/tree-sitter/tree-sitter-bash.git
+	url = https://github.com/tree-sitter/tree-sitter-bash
 [submodule "yaml"]
 	path = yaml
 	url = https://github.com/ikatyang/tree-sitter-yaml
@@ -9,7 +9,7 @@
 	url = https://github.com/ikatyang/tree-sitter-toml
 [submodule "rust"]
 	path = rust
-	url = https://github.com/tree-sitter/tree-sitter-rust.git
+	url = https://github.com/tree-sitter/tree-sitter-rust
 [submodule "dockerfile"]
 	path = dockerfile
 	url = https://github.com/camdencheek/tree-sitter-dockerfile
