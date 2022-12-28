@@ -27,6 +27,7 @@ elif [ -f scanner.cc ]; then
 fi
 
 $CC -fPIC -shared *.o -o "../../dist/libtree-sitter-${lang}.dll"
+rm -f grammar.js *.o
 
 cp ../LICENSE "../../dist/licenses/LICENSE-$lang"
 
