@@ -10,3 +10,6 @@
 [submodule "rust"]
 	path = rust
 	url = https://github.com/tree-sitter/tree-sitter-rust.git
+[submodule "dockerfile"]
+	path = dockerfile
+	url = https://github.com/camdencheek/tree-sitter-dockerfile
