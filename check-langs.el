@@ -9,7 +9,6 @@
                dockerfile
                go
                gomod
-               html
                java
                javascript
                json
