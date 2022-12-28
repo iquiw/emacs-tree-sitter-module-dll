@@ -28,4 +28,6 @@ fi
 
 $CC -fPIC -shared *.o -o "../../dist/libtree-sitter-${lang}.dll"
 
+cp ../LICENSE "../../dist/licenses/LICENSE-$lang"
+
 echo "done."

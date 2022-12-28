@@ -28,7 +28,7 @@ jobs:
         run: |
           export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
 
-          mkdir -p dist
+          mkdir -p dist/licenses
 
           git submodule foreach sh ../build.sh .
 
@@ -46,7 +46,7 @@ jobs:
           $ARCHIVE = "emacs-tree-sitter-module-$VERSION.zip"
 
           cd dist
-          Compress-Archive -Path *.dll -DestinationPath "../$ARCHIVE"
+          Compress-Archive -Path *.dll,licenses -DestinationPath "../$ARCHIVE"
           cd ..
           $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 "$ARCHIVE").Hash
           "$ARTIFACT_HASH  $ARCHIVE"| Out-File -Encoding ascii -File sha256sum.txt
