@@ -30,7 +30,7 @@ jobs:
 
           mkdir -p dist/licenses
 
-          git submodule foreach sh ../build.sh .
+          git submodule foreach bash ../build.sh .
           git submodule status > dist/language-manifest.txt
 
           echo "summary<<EOF" >> "$GITHUB_OUTPUT"
