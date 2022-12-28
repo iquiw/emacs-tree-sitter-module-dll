@@ -4,3 +4,6 @@
 [submodule "yaml"]
 	path = yaml
 	url = https://github.com/ikatyang/tree-sitter-yaml
+[submodule "toml"]
+	path = toml
+	url = https://github.com/ikatyang/tree-sitter-toml
