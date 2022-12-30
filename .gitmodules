@@ -31,3 +31,6 @@
 [submodule "c"]
 	path = c
 	url = https://github.com/tree-sitter/tree-sitter-c
+[submodule "c-sharp"]
+	path = c-sharp
+	url = https://github.com/tree-sitter/tree-sitter-c-sharp
