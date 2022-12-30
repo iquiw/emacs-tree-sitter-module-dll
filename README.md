@@ -7,6 +7,7 @@ tree-sitter language module DLLs for Emacs.
 - [bash](https://github.com/tree-sitter/tree-sitter-bash)
 - [c](https://github.com/tree-sitter/tree-sitter-c)
 - [c-sharp](https://github.com/tree-sitter/tree-sitter-c-sharp)
+- [cmake](https://github.com/uyha/tree-sitter-cmake)
 - [cpp](https://github.com/tree-sitter/tree-sitter-cpp)
 - [css](https://github.com/tree-sitter/tree-sitter-css)
 - [dockerfile](https://github.com/camdencheek/tree-sitter-dockerfile)

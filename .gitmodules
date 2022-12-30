@@ -46,3 +46,6 @@
 [submodule "gomod"]
 	path = gomod
 	url = https://github.com/camdencheek/tree-sitter-go-mod
+[submodule "cmake"]
+	path = cmake
+	url = https://github.com/uyha/tree-sitter-cmake
