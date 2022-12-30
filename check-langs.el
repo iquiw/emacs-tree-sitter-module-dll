@@ -2,9 +2,9 @@
 
 (let ((langs '(bash
                c
+               c-sharp
                cmake
                cpp
-               c-sharp
                css
                dockerfile
                go
