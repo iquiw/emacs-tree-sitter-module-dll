@@ -28,3 +28,6 @@
 [submodule "go"]
 	path = go
 	url = https://github.com/tree-sitter/tree-sitter-go
+[submodule "c"]
+	path = c
+	url = https://github.com/tree-sitter/tree-sitter-c
