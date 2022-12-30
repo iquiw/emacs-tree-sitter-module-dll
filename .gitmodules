@@ -37,3 +37,6 @@
 [submodule "cpp"]
 	path = cpp
 	url = https://github.com/tree-sitter/tree-sitter-cpp
+[submodule "css"]
+	path = css
+	url = https://github.com/tree-sitter/tree-sitter-css
