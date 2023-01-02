@@ -13,6 +13,7 @@
                javascript
                json
                python
+               ruby
                rust
                toml
                tsx

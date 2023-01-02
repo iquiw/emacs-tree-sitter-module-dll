@@ -49,3 +49,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = https://github.com/uyha/tree-sitter-cmake
+[submodule "ruby"]
+	path = ruby
+	url = https://github.com/tree-sitter/tree-sitter-ruby
