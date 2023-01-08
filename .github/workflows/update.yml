@@ -1,0 +1,27 @@
+name: Update
+
+on:
+  schedule:
+    - cron:  '0 2 * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 100
+          submodules: true
+
+      - name: Update tree-sitter modules
+        id: update
+        run: 'bash update.sh'
+
+      - name: Commit updates
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'Update ${{ steps.update.outputs.modules }} to the latest'
+          commit_user_name: Iku Iwasa
+          commit_user_email: iku.iwasa@gmail.com
