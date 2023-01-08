@@ -1,9 +1,10 @@
 name: Build
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_run:
+    workflows: [Update]
+    types:
+      - completed
 
 jobs:
   build:
@@ -15,15 +16,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 100
           submodules: true
 
+      - name: Check if today's tag exists
+        id: tag
+        run: |
+          export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
+
+          today="$(date +%Y%m%d)"
+          tag="$(cat tag.txt)"
+          if [ "$tag" = "$today" ]; then
+          	echo "skip=false" >> "$GITHUB_OUTPUT"
+          	echo "tag=$today" >> "$GITHUB_OUTPUT"
+          else
+          	echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+        shell: 'C:/shells/msys2bash.cmd {0}'
+
       - name: Install dependencies
+        if: ${{ steps.tag.outputs.skip == 'false' }}
         run: |
            pacman -S --noconfirm --needed --noprogressbar make mingw-w64-x86_64-gcc
         shell: 'C:/shells/msys2bash.cmd {0}'
 
       - name: Build tree-sitter modules
+        if: ${{ steps.tag.outputs.skip == 'false' }}
         id: build
         run: |
           export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
@@ -31,7 +48,7 @@ jobs:
           mkdir -p dist/licenses
 
           git submodule foreach bash ../build.sh .
-          git submodule status > dist/language-manifest.txt
+          cp language-manifest.txt dist/
 
           echo "summary<<EOF" >> "$GITHUB_OUTPUT"
           cat dist/language-manifest.txt >> "$GITHUB_OUTPUT"
@@ -41,10 +58,10 @@ jobs:
         shell: 'C:/shells/msys2bash.cmd {0}'
 
       - name: Archive
+        if: ${{ steps.tag.outputs.skip == 'false' }}
         id: archive
         run: |
-          $VERSION = "${{ github.ref }}" -Replace "refs/tags/", ""
-          $ARCHIVE = "emacs-tree-sitter-module-$VERSION.zip"
+          $ARCHIVE = "emacs-tree-sitter-module-${{ steps.tag.outputs.tag }}.zip"
 
           cd dist
           Compress-Archive -Path *.dll,language-manifest.txt,licenses -DestinationPath "../$ARCHIVE"
@@ -52,15 +69,17 @@ jobs:
           $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 "$ARCHIVE").Hash
           "$ARTIFACT_HASH  $ARCHIVE"| Out-File -Encoding ascii -File sha256sum.txt
 
-          "version=$VERSION`n" | Out-File -NoNewline -Encoding utf8 -Append $env:GITHUB_OUTPUT
           gc $env:GITHUB_OUTPUT
 
       - name: Create Release
+        if: ${{ steps.tag.outputs.skip == 'false' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "emacs-tree-sitter-module-${{ steps.archive.outputs.version }}.zip,sha256sum.txt"
+          commit: '${{ github.sha }}'
+          tag: '${{ steps.tag.outputs.tag }}'
+          artifacts: "emacs-tree-sitter-module-${{ steps.tag.outputs.tag }}.zip,sha256sum.txt"
           artifactContentType: application/octet-stream
-          name: tree-sitter module DLLs ${{ steps.archive.outputs.version }}
+          name: tree-sitter module DLLs ${{ steps.tag.outputs.tag }}
           body: |
             tree-sitter module DLLs.
 
