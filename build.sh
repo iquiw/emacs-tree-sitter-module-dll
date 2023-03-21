@@ -9,7 +9,6 @@ build() {
         local lang=$2
         local dest=$3
 
-        cp "$dir/grammar.js" "$dir/src"
         pushd "$dir/src" >/dev/null
 
         $CC -fPIC -c -I. parser.c
@@ -22,7 +21,7 @@ build() {
         fi
 
         $CC -fPIC -shared ./*.o -o "$dest/libtree-sitter-${lang}.dll"
-        rm -f grammar.js ./*.o
+
         popd >/dev/null
 }
 
