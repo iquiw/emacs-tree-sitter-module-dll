@@ -55,3 +55,6 @@
 [submodule "elixir"]
 	path = elixir
 	url = https://github.com/elixir-lang/tree-sitter-elixir
+[submodule "heex"]
+	path = heex
+	url = https://github.com/phoenixframework/tree-sitter-heex
