@@ -11,6 +11,7 @@
                go
                gomod
                heex
+               html
                java
                javascript
                json

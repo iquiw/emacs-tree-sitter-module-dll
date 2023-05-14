@@ -58,3 +58,6 @@
 [submodule "heex"]
 	path = heex
 	url = https://github.com/phoenixframework/tree-sitter-heex
+[submodule "html"]
+	path = html
+	url = https://github.com/tree-sitter/tree-sitter-html
