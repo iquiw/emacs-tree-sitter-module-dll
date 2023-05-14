@@ -7,8 +7,10 @@
                cpp
                css
                dockerfile
+               elixir
                go
                gomod
+               heex
                java
                javascript
                json
