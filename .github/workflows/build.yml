@@ -1,16 +1,22 @@
 name: Build
 
 on:
-  workflow_run:
-    workflows: [Update]
-    types:
-      - completed
+  push:
+    tags:
+      - "*"
+  # workflow_run:
+  #   workflows: [Update]
+  #   types:
+  #     - completed
 
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        msystem: ["MINGW64", "UCRT64"]
     env:
-      MSYSTEM: MINGW64
+      MSYSTEM: ${{ matrix.msystem }}
 
     steps:
       - name: Checkout repository
@@ -21,8 +27,6 @@ jobs:
       - name: Check if today's tag exists
         id: tag
         run: |
-          export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
-
           today="$(date +%Y%m%d)"
           tag="$(cat tag.txt)"
           if [ "$tag" = "$today" ]; then
@@ -36,14 +40,23 @@ jobs:
       - name: Install dependencies
         if: ${{ steps.tag.outputs.skip == 'false' }}
         run: |
-           pacman -S --noconfirm --needed --noprogressbar make mingw-w64-x86_64-gcc
+          if [ "$MSYSTEM" = "MINGW64" ]; then
+          	pacman -S --noconfirm --needed --noprogressbar make mingw-w64-x86_64-gcc
+          else
+          	pacman -S --noconfirm --needed --noprogressbar make mingw-w64-ucrt-x86_64-gcc
+          fi
         shell: 'C:/shells/msys2bash.cmd {0}'
 
       - name: Build tree-sitter modules
         if: ${{ steps.tag.outputs.skip == 'false' }}
         id: build
         run: |
-          export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
+          if [ "$MSYSTEM" = "MINGW64" ]; then
+          	export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
+          else
+          	export PATH="/ucrt64/bin:/C/Program Files/Git/bin:$PATH"
+          fi
+          cc -v
 
           mkdir -p dist/licenses
 
@@ -61,7 +74,11 @@ jobs:
         if: ${{ steps.tag.outputs.skip == 'false' }}
         id: archive
         run: |
-          $ARCHIVE = "emacs-tree-sitter-module-${{ steps.tag.outputs.tag }}.zip"
+          if ($env:MSYSTEM -eq "MINGW64") {
+              $ARCHIVE = "emacs-tree-sitter-module-${{ steps.tag.outputs.tag }}.zip"
+          } else {
+              $ARCHIVE = "emacs-tree-sitter-module-ucrt64-${{ steps.tag.outputs.tag }}.zip"
+          }
 
           cd dist
           Compress-Archive -Path *.dll,language-manifest.txt,licenses -DestinationPath "../$ARCHIVE"
@@ -75,9 +92,10 @@ jobs:
         if: ${{ steps.tag.outputs.skip == 'false' }}
         uses: ncipollo/release-action@v1
         with:
+          allowUpdates: true
           commit: '${{ github.sha }}'
           tag: '${{ steps.tag.outputs.tag }}'
-          artifacts: "emacs-tree-sitter-module-${{ steps.tag.outputs.tag }}.zip,sha256sum.txt"
+          artifacts: "emacs-tree-sitter-module-*.zip,sha256sum.txt"
           artifactContentType: application/octet-stream
           name: tree-sitter module DLLs ${{ steps.tag.outputs.tag }}
           body: |
