@@ -3,6 +3,7 @@
 set -euo pipefail
 
 CC=cc
+LDFLAGS='-shared'
 
 build() {
 	local dir=$1
@@ -18,9 +19,13 @@ build() {
 	elif [ -f scanner.cc ]; then
 		CC=c++
 		$CC -fPIC -I. -c scanner.cc
+		if [ "$MSYSTEM" = UCRT64 ]; then
+			LDFLAGS="-static-libstdc++ $LDFLAGS"
+		fi
 	fi
 
-	$CC -fPIC -shared ./*.o -o "$dest/libtree-sitter-${lang}.dll"
+	echo $CC -fPIC $LDFLAGS ./*.o -o "$dest/libtree-sitter-${lang}.dll"
+	$CC -fPIC $LDFLAGS ./*.o -o "$dest/libtree-sitter-${lang}.dll"
 
 	popd >/dev/null
 }
@@ -45,6 +50,9 @@ if [ "$dir" = . ]; then
 	lang=${lang##*/}
 else
 	lang=$dir
+fi
+if [ -n "$2" ]; then
+        export MSYSTEM=$2
 fi
 
 echo -n "Building $lang... "
