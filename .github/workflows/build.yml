@@ -81,7 +81,7 @@ jobs:
           Compress-Archive -Path *.dll,language-manifest.txt,licenses -DestinationPath "../$ARCHIVE"
           cd ..
           $ARTIFACT_HASH = (Get-FileHash -Algorithm SHA256 "$ARCHIVE").Hash
-          "$ARTIFACT_HASH  $ARCHIVE"| Out-File -Encoding ascii -File sha256sum.txt
+          "$ARTIFACT_HASH" | Out-File -Encoding ascii -File "$ARCHIVE.sha256"
 
           gc $env:GITHUB_OUTPUT
 
@@ -92,7 +92,7 @@ jobs:
           allowUpdates: true
           commit: '${{ github.sha }}'
           tag: '${{ steps.tag.outputs.tag }}'
-          artifacts: "emacs-tree-sitter-module-*.zip,sha256sum.txt"
+          artifacts: "emacs-tree-sitter-module-*.zip,emacs-tree-sitter-module-*.zip.sha256"
           artifactContentType: application/octet-stream
           name: tree-sitter module DLLs ${{ steps.tag.outputs.tag }}
           body: |
