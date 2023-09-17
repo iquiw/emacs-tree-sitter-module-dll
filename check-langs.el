@@ -15,6 +15,7 @@
                java
                javascript
                json
+               lua
                python
                ruby
                rust
