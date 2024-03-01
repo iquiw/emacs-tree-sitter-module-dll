@@ -17,7 +17,9 @@ jobs:
 
       - name: Update tree-sitter modules
         id: update
-        run: 'bash update.sh'
+        run: |
+          git status
+          bash update.sh
 
       - name: Commit updates
         uses: stefanzweifel/git-auto-commit-action@v5
