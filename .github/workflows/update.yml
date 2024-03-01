@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 100
           submodules: true
@@ -20,7 +20,7 @@ jobs:
         run: 'bash update.sh'
 
       - name: Commit updates
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Update ${{ steps.update.outputs.modules }} to the latest'
           commit_user_name: Iku Iwasa
