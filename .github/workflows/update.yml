@@ -9,9 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Disable autocrlf
+        run: git config --global core.autocrlf=false
       - name: Checkout repository
         uses: actions/checkout@v4
-        run: git config --global core.autocrlf=false
         with:
           fetch-depth: 100
           submodules: true
