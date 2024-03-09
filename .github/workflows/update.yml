@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Disable autocrlf
-        run: git config --global core.autocrlf false
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -20,6 +18,13 @@ jobs:
       - name: Update tree-sitter modules
         id: update
         run: |
+          cp gitattributes-hack python/.gitattributes
+          cd python
+          git status
+          git restore .gitattributes
+          git status
+          cd ..
+
           git status
           bash update.sh
 
