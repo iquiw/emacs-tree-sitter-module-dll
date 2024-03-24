@@ -18,15 +18,8 @@ jobs:
       - name: Update tree-sitter modules
         id: update
         run: |
-          cp gitattributes-hack python/.gitattributes
-          cd python
-          git status
-          git restore .gitattributes
-          git status
-          cd ..
-
-          git status
           bash update.sh
+          git status
 
       - name: Commit updates
         uses: stefanzweifel/git-auto-commit-action@v5

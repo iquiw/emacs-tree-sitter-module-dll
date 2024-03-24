@@ -12,7 +12,7 @@ check_changed() {
         fi
 }
 
-git submodule foreach sh -c 'git fetch && git switch -d origin/HEAD'
+git submodule foreach sh checkout.sh
 
 if [ -n "$GITHUB_OUTPUT" ]; then
         if check_changed >> "$GITHUB_OUTPUT"; then
