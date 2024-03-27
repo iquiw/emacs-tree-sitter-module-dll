@@ -12,7 +12,7 @@ check_changed() {
         fi
 }
 
-git submodule foreach sh checkout.sh
+git submodule foreach sh ../checkout.sh
 
 if [ -n "$GITHUB_OUTPUT" ]; then
         if check_changed >> "$GITHUB_OUTPUT"; then
