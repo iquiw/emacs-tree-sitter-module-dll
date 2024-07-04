@@ -18,6 +18,7 @@ tree-sitter language module DLLs for Emacs.
 - [html](https://github.com/tree-sitter/tree-sitter-html)
 - [java](https://github.com/tree-sitter/tree-sitter-java)
 - [javascript](https://github.com/tree-sitter/tree-sitter-javascript)
+- [jsdoc](https://github.com/tree-sitter/tree-sitter-jsdoc)
 - [json](https://github.com/tree-sitter/tree-sitter-json)
 - [lua](https://github.com/tree-sitter/tree-sitter-html)
 - [python](https://github.com/tree-sitter/tree-sitter-python)
