@@ -85,11 +85,29 @@ jobs:
 
           gc $env:GITHUB_OUTPUT
 
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ matrix.msystem }}
+          path: |
+            emacs-tree-sitter-module-*.zip
+
+  release:
+    runs-on: ubuntu-latest
+
+    needs: [build]
+
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          pattern: emacs-tree-sitter-module-*.zip
+          merge-multiple: true
+
       - name: Create Release
         if: ${{ steps.tag.outputs.skip == 'false' }}
         uses: ncipollo/release-action@v1
         with:
-          allowUpdates: true
           commit: '${{ github.sha }}'
           tag: '${{ steps.tag.outputs.tag }}'
           artifacts: "emacs-tree-sitter-module-*.zip,emacs-tree-sitter-module-*.zip.sha256"
