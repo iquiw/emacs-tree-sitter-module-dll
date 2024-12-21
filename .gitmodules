@@ -3,10 +3,10 @@
 	url = https://github.com/tree-sitter/tree-sitter-bash
 [submodule "yaml"]
 	path = yaml
-	url = https://github.com/ikatyang/tree-sitter-yaml
+	url = https://github.com/tree-sitter-grammars/tree-sitter-yaml
 [submodule "toml"]
 	path = toml
-	url = https://github.com/ikatyang/tree-sitter-toml
+	url = https://github.com/tree-sitter-grammars/tree-sitter-toml
 [submodule "rust"]
 	path = rust
 	url = https://github.com/tree-sitter/tree-sitter-rust
@@ -63,7 +63,7 @@
 	url = https://github.com/tree-sitter/tree-sitter-html
 [submodule "lua"]
 	path = lua
-	url = https://github.com/MunifTanjim/tree-sitter-lua
+	url = https://github.com/tree-sitter-grammars/tree-sitter-lua
 [submodule "jsdoc"]
 	path = jsdoc
 	url = https://github.com/tree-sitter/tree-sitter-jsdoc
