@@ -101,7 +101,7 @@ jobs:
       - name: Download packages
         uses: actions/download-artifact@v4
         with:
-          pattern: emacs-tree-sitter-module-*.zip
+          pattern: package-*
           merge-multiple: true
 
       - name: Create Release
