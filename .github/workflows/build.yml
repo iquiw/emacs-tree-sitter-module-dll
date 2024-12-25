@@ -104,6 +104,9 @@ jobs:
           pattern: package-*
           merge-multiple: true
 
+      - name: Display structure of downloaded files
+        run: ls -R
+
       - name: Create Release
         if: ${{ steps.tag.outputs.skip == 'false' }}
         uses: ncipollo/release-action@v1
