@@ -108,14 +108,14 @@ jobs:
         run: ls -R
 
       - name: Create Release
-        if: ${{ steps.tag.outputs.skip == 'false' }}
+        if: ${{ needs.build.steps.tag.outputs.skip == 'false' }}
         uses: ncipollo/release-action@v1
         with:
           commit: '${{ github.sha }}'
-          tag: '${{ steps.tag.outputs.tag }}'
+          tag: '${{ needs.build.steps.tag.outputs.tag }}'
           artifacts: "emacs-tree-sitter-module-*.zip,emacs-tree-sitter-module-*.zip.sha256"
           artifactContentType: application/octet-stream
-          name: tree-sitter module DLLs ${{ steps.tag.outputs.tag }}
+          name: tree-sitter module DLLs ${{ needs.build.steps.tag.outputs.tag }}
           body: |
             tree-sitter module DLLs.
 
