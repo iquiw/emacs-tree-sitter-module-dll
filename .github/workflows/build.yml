@@ -14,6 +14,10 @@ jobs:
         msystem: ["MINGW64", "UCRT64"]
     env:
       MSYSTEM: ${{ matrix.msystem }}
+    outputs:
+      skip-${{ matrix.msystem }}: ${{ steps.tag.outputs.skip }}
+      tag-${{ matrix.msystem }}: ${{ steps.tag.outputs.tag }}
+      summary-${{ matrix.msystem }}: ${{ steps.build.outputs.summary }}
 
     steps:
       - name: Checkout repository
@@ -108,17 +112,17 @@ jobs:
         run: ls -R
 
       - name: Create Release
-        if: ${{ needs.build.steps.tag.outputs.skip == 'false' }}
+        if: ${{ needs.build.outputs.skip-MINGW64 == 'false' }}
         uses: ncipollo/release-action@v1
         with:
           commit: '${{ github.sha }}'
-          tag: '${{ needs.build.steps.tag.outputs.tag }}'
+          tag: '${{ needs.build.outputs.tag-MINGW64 }}'
           artifacts: "emacs-tree-sitter-module-*.zip,emacs-tree-sitter-module-*.zip.sha256"
           artifactContentType: application/octet-stream
-          name: tree-sitter module DLLs ${{ needs.build.steps.tag.outputs.tag }}
+          name: tree-sitter module DLLs ${{ needs.build.outputs.tag-MINGW64 }}
           body: |
             tree-sitter module DLLs.
 
             ```
-            ${{ steps.build.outputs.summary }}
+            ${{ needs.build.outputs.summary-MINGW64 }}
             ```
