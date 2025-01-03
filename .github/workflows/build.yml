@@ -15,9 +15,9 @@ jobs:
     env:
       MSYSTEM: ${{ matrix.msystem }}
     outputs:
-      skip-${{ matrix.msystem }}: ${{ steps.tag.outputs.skip }}
-      tag-${{ matrix.msystem }}: ${{ steps.tag.outputs.tag }}
-      summary-${{ matrix.msystem }}: ${{ steps.build.outputs.summary }}
+      skip: ${{ steps.tag.outputs.skip-MINGW64 }}
+      tag: ${{ steps.tag.outputs.tag-MINGW64 }}
+      summary: ${{ steps.build.outputs.summary-MINGW64 }}
 
     steps:
       - name: Checkout repository
@@ -31,10 +31,10 @@ jobs:
           today="$(date +%Y%m%d)"
           tag="$(cat tag.txt)"
           if [ "$tag" = "$today" ]; then
-          	echo "skip=false" >> "$GITHUB_OUTPUT"
-          	echo "tag=$today" >> "$GITHUB_OUTPUT"
+          	echo "skip-${MSYSTEM}=false" >> "$GITHUB_OUTPUT"
+          	echo "tag-${MSYSTEM}=$today" >> "$GITHUB_OUTPUT"
           else
-          	echo "skip=true" >> "$GITHUB_OUTPUT"
+          	echo "skip-${MSYSTEM}=true" >> "$GITHUB_OUTPUT"
           fi
         shell: 'C:/shells/msys2bash.cmd {0}'
 
@@ -64,7 +64,7 @@ jobs:
           git submodule foreach bash ../build.sh . "$MSYSTEM"
           cp language-manifest.txt dist/
 
-          echo "summary<<EOF" >> "$GITHUB_OUTPUT"
+          echo "summary-${MSYSTEM}<<EOF" >> "$GITHUB_OUTPUT"
           cat dist/language-manifest.txt >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
@@ -112,17 +112,17 @@ jobs:
         run: ls -R
 
       - name: Create Release
-        if: ${{ needs.build.outputs.skip-MINGW64 == 'false' }}
+        if: ${{ needs.build.outputs.skip == 'false' }}
         uses: ncipollo/release-action@v1
         with:
           commit: '${{ github.sha }}'
-          tag: '${{ needs.build.outputs.tag-MINGW64 }}'
+          tag: '${{ needs.build.outputs.tag }}'
           artifacts: "emacs-tree-sitter-module-*.zip,emacs-tree-sitter-module-*.zip.sha256"
           artifactContentType: application/octet-stream
-          name: tree-sitter module DLLs ${{ needs.build.outputs.tag-MINGW64 }}
+          name: tree-sitter module DLLs ${{ needs.build.outputs.tag }}
           body: |
             tree-sitter module DLLs.
 
             ```
-            ${{ needs.build.outputs.summary-MINGW64 }}
+            ${{ needs.build.outputs.summary }}
             ```
