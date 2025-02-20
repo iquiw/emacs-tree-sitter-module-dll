@@ -67,3 +67,6 @@
 [submodule "jsdoc"]
 	path = jsdoc
 	url = https://github.com/tree-sitter/tree-sitter-jsdoc
+[submodule "markdown"]
+	path = markdown
+	url = https://github.com/tree-sitter-grammars/tree-sitter-markdown

@@ -17,6 +17,8 @@
                jsdoc
                json
                lua
+               markdown
+               markdown-inline
                python
                ruby
                rust

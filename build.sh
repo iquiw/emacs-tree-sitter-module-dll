@@ -61,6 +61,10 @@ if [ "$lang" = typescript ]; then
 	dest=../../../dist
 	build "$dir/typescript" typescript "$dest"
 	build "$dir/tsx" tsx "$dest"
+elif [ "$lang" = markdown ]; then
+	dest=../../../dist
+	build "$dir/tree-sitter-markdown" markdown "$dest"
+	build "$dir/tree-sitter-markdown-inline" markdown-inline "$dest"
 else
 	dest=../../dist
 	build "$dir" "$lang" "$dest"
