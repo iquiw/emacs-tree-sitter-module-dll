@@ -14,6 +14,8 @@ check_changed() {
 
 git submodule foreach bash ../checkout.sh
 
+echo "!$GITHUB_OUTPUT!"
+
 if [ -n "$GITHUB_OUTPUT" ]; then
         if check_changed >> "$GITHUB_OUTPUT"; then
                 date +%Y%m%d > tag.txt
@@ -22,4 +24,3 @@ if [ -n "$GITHUB_OUTPUT" ]; then
 else
         check_changed
 fi
-
