@@ -1,0 +1,50 @@
+name: CI Fix
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        msystem: ["MINGW64"]
+    env:
+      MSYSTEM: ${{ matrix.msystem }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install dependencies
+        if: ${{ steps.tag.outputs.skip == 'false' }}
+        run: |
+          if [ "$MSYSTEM" = "MINGW64" ]; then
+          	pacman -S --noconfirm --needed --noprogressbar make mingw-w64-x86_64-gcc
+          else
+          	pacman -S --noconfirm --needed --noprogressbar make mingw-w64-ucrt-x86_64-gcc
+          fi
+        shell: 'C:/shells/msys2bash.cmd {0}'
+
+      - name: Build tree-sitter modules
+        if: ${{ steps.tag.outputs.skip == 'false' }}
+        id: build
+        run: |
+          if [ "$MSYSTEM" = "MINGW64" ]; then
+          	export PATH="/mingw64/bin:/C/Program Files/Git/bin:$PATH"
+          else
+          	export PATH="/ucrt64/bin:/C/Program Files/Git/bin:$PATH"
+          fi
+          which cc
+          cc -v
+
+          mkdir -p dist/licenses
+
+          git submodule foreach bash ../build.sh . "$MSYSTEM"
+
+          ls -l dist
+        shell: 'C:/shells/msys2bash.cmd {0}'
