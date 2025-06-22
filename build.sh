@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -euo pipefail
+set -euxo pipefail
 
 CC=cc
 LDFLAGS='-shared'
