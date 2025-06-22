@@ -21,7 +21,6 @@ jobs:
           submodules: true
 
       - name: Install dependencies
-        if: ${{ steps.tag.outputs.skip == 'false' }}
         run: |
           if [ "$MSYSTEM" = "MINGW64" ]; then
           	pacman -S --noconfirm --needed --noprogressbar make mingw-w64-x86_64-gcc
@@ -31,7 +30,6 @@ jobs:
         shell: 'C:/shells/msys2bash.cmd {0}'
 
       - name: Build tree-sitter modules
-        if: ${{ steps.tag.outputs.skip == 'false' }}
         id: build
         run: |
           if [ "$MSYSTEM" = "MINGW64" ]; then
