@@ -12,7 +12,7 @@ build() {
 
 	pushd "$dir/src" >/dev/null
 
-	$CC -fPIC -c -I. parser.c
+	$CC -fPIC -c -I. -v parser.c
 
 	if [ -f scanner.c ]; then
 		$CC -fPIC -c -I. scanner.c
