@@ -46,3 +46,6 @@ jobs:
 
           ls -l dist
         shell: 'C:/shells/msys2bash.cmd {0}'
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
